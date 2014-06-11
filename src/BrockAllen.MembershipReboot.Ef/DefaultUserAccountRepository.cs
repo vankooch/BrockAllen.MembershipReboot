@@ -5,15 +5,18 @@
 
 
 using BrockAllen.MembershipReboot.Relational;
+using System;
 using System.Data.Entity;
 
 namespace BrockAllen.MembershipReboot.Ef
 {
     public class DefaultUserAccountRepository
            : DbContextUserAccountRepository<DefaultMembershipRebootDatabase, RelationalUserAccount>, 
-             IUserAccountRepository
+             IUserAccountRepository,
+             IDisposable
     {
         public DefaultUserAccountRepository()
+            : base(new DefaultMembershipRebootDatabase())
         {
         }
 
@@ -87,6 +90,11 @@ namespace BrockAllen.MembershipReboot.Ef
         public new UserAccount GetByCertificate(string tenant, string thumbprint)
         {
             return This.GetByCertificate(tenant, thumbprint);
+        }
+
+        public void Dispose()
+        {
+            base.db.Dispose();
         }
     }
 }

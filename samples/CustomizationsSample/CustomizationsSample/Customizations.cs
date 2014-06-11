@@ -96,19 +96,19 @@ namespace BrockAllen.MembershipReboot.Mvc
         }
     }
 
-    public class CustomRepository : DbContextUserAccountRepository<CustomDatabase, CustomUserAccount>, IUserAccountRepository<CustomUserAccount>
+    public class CustomRepository : 
+        DbContextUserAccountRepository<CustomDatabase, CustomUserAccount>, IUserAccountRepository<CustomUserAccount>,
+        IDisposable
     {
         // you can do either style ctor (or none) -- depends how much control 
         // you want over instantiating the CustomDatabase instance
         public CustomRepository()
             : base(new CustomDatabase())
         {
-            this.isContextOwner = true;
         }
         public CustomRepository(string name)
             : base(new CustomDatabase(name))
         {
-            this.isContextOwner = true;
         }
         public CustomRepository(CustomDatabase db)
             : base(db)
@@ -125,6 +125,11 @@ namespace BrockAllen.MembershipReboot.Mvc
                 from c in a.ClaimCollection
                     where c.Value.Contains(filter)
                 select a;
+        }
+
+        public void Dispose()
+        {
+            base.db.Dispose();
         }
     }
 
