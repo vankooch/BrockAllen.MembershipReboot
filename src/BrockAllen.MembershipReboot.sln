@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrockAllen.MembershipReboot", "BrockAllen.MembershipReboot\BrockAllen.MembershipReboot.csproj", "{A33FE01F-AE9B-4BDE-B521-AB13916B1CFA}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrockAllen.MembershipReboot.Ef", "BrockAllen.MembershipReboot.Ef\BrockAllen.MembershipReboot.Ef.csproj", "{453C8A9D-72AA-4F8D-9354-8B0F57F2B58A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrockAllen.MembershipReboot.Owin", "BrockAllen.MembershipReboot.Owin\BrockAllen.MembershipReboot.Owin.csproj", "{FB9C17A4-1BAC-4C11-BBB0-8D67557073A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SiCo.MembershipReboot.Ef.Npgsql", "SiCo.MembershipReboot.Ef.Npgsql\SiCo.MembershipReboot.Ef.Npgsql.csproj", "{3710643F-146E-4CDC-AAC6-8A1D6A153DA2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{FB9C17A4-1BAC-4C11-BBB0-8D67557073A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB9C17A4-1BAC-4C11-BBB0-8D67557073A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB9C17A4-1BAC-4C11-BBB0-8D67557073A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3710643F-146E-4CDC-AAC6-8A1D6A153DA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3710643F-146E-4CDC-AAC6-8A1D6A153DA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3710643F-146E-4CDC-AAC6-8A1D6A153DA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3710643F-146E-4CDC-AAC6-8A1D6A153DA2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,7 +4,7 @@
 namespace BrockAllen.MembershipReboot.Mvc.App_Start
 {
     using BrockAllen.MembershipReboot;
-    using BrockAllen.MembershipReboot.Ef;
+    using SiCo.MembershipReboot.Ef.Npgsql;
     using BrockAllen.MembershipReboot.WebHost;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
     using Ninject;
@@ -55,7 +55,7 @@ namespace BrockAllen.MembershipReboot.Mvc.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<DefaultMembershipRebootDatabase, BrockAllen.MembershipReboot.Ef.Migrations.Configuration>());
+            //Database.SetInitializer(new MigrateDatabaseToLatestVersion<DefaultMembershipRebootDatabase, BrockAllen.MembershipReboot.Ef.Migrations.Configuration>());
 
             var config = MembershipRebootConfig.Create();
             kernel.Bind<MembershipRebootConfiguration>().ToConstant(config);

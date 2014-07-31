@@ -1,4 +1,4 @@
-﻿using BrockAllen.MembershipReboot.Ef;
+﻿using SiCo.MembershipReboot.Ef.Npgsql;
 using BrockAllen.MembershipReboot.Relational;
 using BrockAllen.MembershipReboot.WebHost;
 using System;
