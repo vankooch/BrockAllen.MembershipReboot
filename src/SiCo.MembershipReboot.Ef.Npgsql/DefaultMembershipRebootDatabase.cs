@@ -2,6 +2,7 @@
 using System.Data.Entity;
 using BrockAllen.MembershipReboot;
 using BrockAllen.MembershipReboot.Relational;
+using System.Data.Entity.Migrations.History; 
 
 namespace SiCo.MembershipReboot.Ef.Npgsql
 {
