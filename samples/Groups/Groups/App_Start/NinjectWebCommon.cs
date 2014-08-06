@@ -4,27 +4,27 @@
 namespace BrockAllen.MembershipReboot.Mvc.App_Start
 {
     using BrockAllen.MembershipReboot;
-    using BrockAllen.MembershipReboot.Ef;
+    using SiCo.MembershipReboot.Ef.Npgsql;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
     using Ninject;
     using Ninject.Web.Common;
     using System;
     using System.Web;
 
-    public static class NinjectWebCommon 
+    public static class NinjectWebCommon
     {
         private static readonly Bootstrapper bootstrapper = new Bootstrapper();
 
         /// <summary>
         /// Starts the application
         /// </summary>
-        public static void Start() 
+        public static void Start()
         {
             DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
             DynamicModuleUtility.RegisterModule(typeof(NinjectHttpModule));
             bootstrapper.Initialize(CreateKernel);
         }
-        
+
         /// <summary>
         /// Stops the application.
         /// </summary>
@@ -32,7 +32,7 @@ namespace BrockAllen.MembershipReboot.Mvc.App_Start
         {
             bootstrapper.ShutDown();
         }
-        
+
         /// <summary>
         /// Creates the kernel that will manage your application.
         /// </summary>
@@ -42,7 +42,7 @@ namespace BrockAllen.MembershipReboot.Mvc.App_Start
             var kernel = new StandardKernel();
             kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
             kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
-            
+
             RegisterServices(kernel);
             return kernel;
         }
@@ -53,8 +53,7 @@ namespace BrockAllen.MembershipReboot.Mvc.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            System.Data.Entity.Database.SetInitializer(new System.Data.Entity.MigrateDatabaseToLatestVersion<DefaultMembershipRebootDatabase, BrockAllen.MembershipReboot.Ef.Migrations.Configuration>());
-            //System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseIfModelChanges<DefaultMembershipRebootDatabase>());
+            System.Data.Entity.Database.SetInitializer<DefaultMembershipRebootDatabase>(new System.Data.Entity.CreateDatabaseIfNotExists<DefaultMembershipRebootDatabase>());
             kernel.Bind<IGroupRepository>().To<DefaultGroupRepository>().InRequestScope();
             kernel.Bind<IGroupQuery>().To<DefaultGroupRepository>().InRequestScope();
             kernel.Bind<GroupService>().ToMethod(ctx => new GroupService("default", ctx.Kernel.Get<IGroupRepository>()));
