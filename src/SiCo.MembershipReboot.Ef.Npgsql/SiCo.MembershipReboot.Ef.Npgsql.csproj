@@ -84,7 +84,7 @@
   <ItemGroup>
     <Content Include="license.txt" />
     <Content Include="Sql\v7_Initial.old.sql" />
-    <Content Include="Sql\v7_Initial.sql" />
+    <Content Include="Sql\v7_Initial.dump.sql" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201403032007363_v7_InitialCreate.resx">

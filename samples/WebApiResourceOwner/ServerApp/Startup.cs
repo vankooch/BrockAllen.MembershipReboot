@@ -1,6 +1,6 @@
 ﻿using Autofac;
 using BrockAllen.MembershipReboot;
-using BrockAllen.MembershipReboot.Ef;
+using SiCo.MembershipReboot.Ef.Npgsql;
 using BrockAllen.MembershipReboot.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.OAuth;
@@ -43,7 +43,7 @@ namespace ServerApp
 
         private static void ConfigureMembershipReboot(IAppBuilder app)
         {
-            System.Data.Entity.Database.SetInitializer(new System.Data.Entity.MigrateDatabaseToLatestVersion<DefaultMembershipRebootDatabase, BrockAllen.MembershipReboot.Ef.Migrations.Configuration>());
+            System.Data.Entity.Database.SetInitializer<DefaultMembershipRebootDatabase>(new System.Data.Entity.CreateDatabaseIfNotExists<DefaultMembershipRebootDatabase>());
 
             var builder = new ContainerBuilder();
 

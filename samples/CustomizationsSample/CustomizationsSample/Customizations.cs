@@ -1,4 +1,4 @@
-﻿using BrockAllen.MembershipReboot.Ef;
+﻿using SiCo.MembershipReboot.Ef.Npgsql;
 using System;
 using System.Linq;
 using System.Data.Entity;

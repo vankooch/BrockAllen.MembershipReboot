@@ -1,4 +1,4 @@
-﻿using BrockAllen.MembershipReboot.Ef;
+﻿using SiCo.MembershipReboot.Ef.Npgsql;
 using BrockAllen.MembershipReboot.Mvc.App_Start;
 using System.Data.Entity;
 using System.Security.Claims;

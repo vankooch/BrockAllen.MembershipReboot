@@ -12,8 +12,8 @@ namespace SiCo.MembershipReboot.Ef.Npgsql.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
-            //SetHistoryContextFactory("Npgsql", (connection, defaultSchema) => new MigrationsHistoryTableNpgsql(connection, defaultSchema));
             SetSqlGenerator("Npgsql", new PostgreSqlMigrationSqlGenerator());
+            //SetHistoryContextFactory("Npgsql", (connection, defaultSchema) => new MigrationsHistoryTableNpgsql(connection, defaultSchema));
         }
 
         protected override void Seed(SiCo.MembershipReboot.Ef.Npgsql.DefaultMembershipRebootDatabase context)
