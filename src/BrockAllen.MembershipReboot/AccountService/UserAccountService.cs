@@ -4,6 +4,7 @@
  */
 
 using System;
+using System.Data.Objects;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -157,10 +158,10 @@ namespace BrockAllen.MembershipReboot
             Tracing.Information("[UserAccountService.Update] called for account: {0}", account.ID);
 
             account.LastUpdated = UtcNow;
-            
+
             UpdateInternal(account);
         }
-        
+
         internal protected virtual void UpdateInternal(TAccount account)
         {
             if (account == null)
@@ -1210,7 +1211,7 @@ namespace BrockAllen.MembershipReboot
             // setting failed count to zero here (and not in SetPassword(account, newPassword))
             // since this API is meant to be an admin-API to reset user's passwords
             account.FailedLoginCount = 0;
-            
+
             Update(account);
 
             Tracing.Verbose("[UserAccountService.SetPassword] success");
@@ -1691,7 +1692,7 @@ namespace BrockAllen.MembershipReboot
 
             account.IsAccountVerified = true;
             account.Email = email;
-            
+
             ClearVerificationKey(account);
 
             this.AddEvent(new EmailVerifiedEvent<TAccount> { Account = account });
@@ -1870,7 +1871,7 @@ namespace BrockAllen.MembershipReboot
             this.AddEvent(new MobilePhoneChangedEvent<TAccount> { Account = account });
 
             Update(account);
-            
+
             Tracing.Verbose("[UserAccountService.ConfirmMobilePhoneNumberFromCode] success");
         }
 
@@ -2337,6 +2338,108 @@ namespace BrockAllen.MembershipReboot
             Update(account);
         }
 
+        public virtual void UpdateClaims(Guid accountID, UserClaimCollection claims)
+        {
+            Tracing.Information("[UserAccountService.UpdateClaims] called for accountID: {0}", accountID);
+
+            if ((claims == null || !claims.Any()))
+            {
+                Tracing.Verbose("[UserAccountService.UpdateClaims] no claims given -- exiting");
+                return;
+            }
+
+            var account = this.GetByID(accountID);
+            if (account == null) throw new ArgumentException("Invalid AccountID");
+
+            foreach (var claimToUpdate in claims ?? UserClaimCollection.Empty)
+            {
+                if (String.IsNullOrWhiteSpace(claimToUpdate.Type))
+                {
+                    Tracing.Error("[UserAccountService.UpdateClaims] failed -- null type");
+                    throw new ArgumentException("type");
+                }
+
+                if (String.IsNullOrWhiteSpace(claimToUpdate.Value))
+                {
+                    Tracing.Error("[UserAccountService.UpdateClaims] failed -- null value");
+                    throw new ArgumentException("value");
+                }
+
+                UpdateClaim(account, claimToUpdate);
+            }
+
+            Update(account);
+        }
+
+        public virtual void UpdateClaim(Guid accountID, string type, string value)
+        {
+            Tracing.Information("[UserAccountService.UpdateClaim] called for accountID: {0}", accountID);
+
+            if (String.IsNullOrWhiteSpace(type))
+            {
+                Tracing.Error("[UserAccountService.UpdateClaim] failed -- null type");
+                throw new ArgumentException("type");
+            }
+
+            if (String.IsNullOrWhiteSpace(value))
+            {
+                Tracing.Error("[UserAccountService.UpdateClaim] failed -- null value");
+                throw new ArgumentException("value");
+            }
+
+            var account = this.GetByID(accountID);
+            if (account == null) throw new ArgumentException("Invalid AccountID", "accountID");
+
+            UpdateClaim(account, new UserClaim(type, value));
+            Update(account);
+        }
+
+        internal virtual void UpdateClaim(TAccount account, UserClaim claimToUpdate)
+        {
+            if (claimToUpdate == null) throw new ArgumentNullException("claim");
+
+            bool addClaim = false;
+
+            if (account.Claims != null && account.Claims.Count() > 0)
+            {
+                // Delete all old entries, if any
+                var claimsToRemove = from claim in account.Claims
+                                     where claim.Type == claimToUpdate.Type
+                                     select claim;
+
+                if (claimsToRemove != null && claimsToRemove.Count() > 0)
+                {
+                    foreach (var claimToRemove in claimsToRemove.ToArray())
+                    {
+                        if (claimToRemove.Value != claimToUpdate.Value)
+                        {
+                            addClaim = true;
+                            account.RemoveClaim(claimToRemove);
+                            this.AddEvent(new ClaimRemovedEvent<TAccount> { Account = account, Claim = claimToRemove });
+
+                            Tracing.Verbose("[UserAccountService.UpdateClaim] claim removed - " + claimToRemove.Type + " : " + claimToRemove.Value);
+                        }
+                    }
+                }
+                else
+                {
+                    addClaim = true;
+                }
+            }
+            else
+            {
+                addClaim = true;
+            }
+
+            if (addClaim)
+            {
+                account.AddClaim(claimToUpdate);
+                this.AddEvent(new ClaimAddedEvent<TAccount> { Account = account, Claim = claimToUpdate });
+
+                Tracing.Verbose("[UserAccountService.UpdateClaim] claim added");
+            }
+        }
+
         public virtual void AddClaim(Guid accountID, string type, string value)
         {
             Tracing.Information("[UserAccountService.AddClaim] called for accountID: {0}", accountID);
@@ -2352,7 +2455,7 @@ namespace BrockAllen.MembershipReboot
                 Tracing.Error("[UserAccountService.AddClaim] failed -- null value");
                 throw new ArgumentException("value");
             }
-            
+
             var account = this.GetByID(accountID);
             if (account == null) throw new ArgumentException("Invalid AccountID", "accountID");
 
@@ -2367,7 +2470,7 @@ namespace BrockAllen.MembershipReboot
             if (!account.HasClaim(claim.Type, claim.Value))
             {
                 account.AddClaim(claim);
-                this.AddEvent(new ClaimAddedEvent<TAccount> {Account = account, Claim = claim});
+                this.AddEvent(new ClaimAddedEvent<TAccount> { Account = account, Claim = claim });
 
                 Tracing.Verbose("[UserAccountService.AddClaim] claim added");
             }
@@ -2432,7 +2535,7 @@ namespace BrockAllen.MembershipReboot
             foreach (var claim in claimsToRemove.ToArray())
             {
                 account.RemoveClaim(claim);
-                this.AddEvent(new ClaimRemovedEvent<TAccount> {Account = account, Claim = claim});
+                this.AddEvent(new ClaimRemovedEvent<TAccount> { Account = account, Claim = claim });
                 Tracing.Verbose("[UserAccountService.RemoveClaim] claim removed");
             }
         }
@@ -2785,7 +2888,7 @@ namespace BrockAllen.MembershipReboot
             ExecuteCommand(cmd);
             return cmd.MappedClaims ?? Enumerable.Empty<Claim>();
         }
-        
+
         internal protected virtual DateTime UtcNow
         {
             get

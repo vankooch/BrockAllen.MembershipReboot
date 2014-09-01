@@ -36,6 +36,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
@@ -45,6 +46,13 @@
     <Compile Include="AccountService\UserAccountCommands.cs" />
     <Compile Include="AccountService\UserAccountValidator.cs" />
     <Compile Include="Account\LinkedAccountClaim.cs" />
+    <Compile Include="Account\Npgsql\PgLinkedAccountClaim.cs" />
+    <Compile Include="Account\Npgsql\PgLinkedAccount.cs" />
+    <Compile Include="Account\Npgsql\PgUserAccount.cs" />
+    <Compile Include="Account\Npgsql\PgPasswordResetSecret.cs" />
+    <Compile Include="Account\Npgsql\PgTwoFactorAuthToken.cs" />
+    <Compile Include="Account\Npgsql\PgUserCertificate.cs" />
+    <Compile Include="Account\Npgsql\PgUserClaim.cs" />
     <Compile Include="Account\Relational\RelationalLinkedAccountClaim.cs" />
     <Compile Include="Account\Relational\RelationalLinkedAccount.cs" />
     <Compile Include="Account\Relational\RelationalUserCertificate.cs" />
@@ -73,6 +81,7 @@
     <Compile Include="Groups\GroupChild.cs" />
     <Compile Include="Groups\GroupService.cs" />
     <Compile Include="Groups\Hierarchical\HierarchicalGroup.cs" />
+    <Compile Include="Groups\Npgsql\PgGroup.cs" />
     <Compile Include="Groups\Relational\RelationalGroup.cs" />
     <Compile Include="Query\IGroupQuery.cs" />
     <Compile Include="Query\GroupQueryResult.cs" />

@@ -3,13 +3,14 @@ using System.Data.Entity;
 using System.Linq;
 using BrockAllen.MembershipReboot;
 using BrockAllen.MembershipReboot.Relational;
+using BrockAllen.MembershipReboot.Npgsql;
 
 namespace SiCo.MembershipReboot.Ef.Npgsql
 {
     public class DbContextUserAccountRepository<Ctx, TAccount> :
         QueryableUserAccountRepository<TAccount>, IDisposable
         where Ctx : DbContext, new()
-        where TAccount : RelationalUserAccount
+        where TAccount : PgUserAccount
     {
         protected DbContext db;
         protected bool isContextOwner;

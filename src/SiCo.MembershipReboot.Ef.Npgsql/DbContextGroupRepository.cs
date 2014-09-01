@@ -2,13 +2,14 @@
 using System.Data.Entity;
 using System.Linq;
 using BrockAllen.MembershipReboot;
+using BrockAllen.MembershipReboot.Npgsql;
 
 namespace SiCo.MembershipReboot.Ef.Npgsql
 {
     public class DbContextGroupRepository<Ctx, TGroup> :
         QueryableGroupRepository<TGroup>, IDisposable
         where Ctx : DbContext, new()
-        where TGroup : RelationalGroup
+        where TGroup : PgGroup
     {
         protected DbContext db;
         private bool isContextOwner;

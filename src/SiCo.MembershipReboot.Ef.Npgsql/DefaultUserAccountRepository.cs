@@ -1,10 +1,11 @@
 ﻿using BrockAllen.MembershipReboot;
 using BrockAllen.MembershipReboot.Relational;
+using BrockAllen.MembershipReboot.Npgsql;
 
 namespace SiCo.MembershipReboot.Ef.Npgsql
 {
     public class DefaultUserAccountRepository
-           : DbContextUserAccountRepository<DefaultMembershipRebootDatabase, RelationalUserAccount>,
+           : DbContextUserAccountRepository<DefaultMembershipRebootDatabase, PgUserAccount>,
              IUserAccountRepository
     {
         public DefaultUserAccountRepository()
@@ -21,11 +22,11 @@ namespace SiCo.MembershipReboot.Ef.Npgsql
         {
         }
 
-        private IUserAccountRepository<RelationalUserAccount> This { get { return (IUserAccountRepository<RelationalUserAccount>)this; } }
+        private IUserAccountRepository<PgUserAccount> This { get { return (IUserAccountRepository<PgUserAccount>)this; } }
 
         public void Add(UserAccount item)
         {
-            This.Add((RelationalUserAccount)item);
+            This.Add((PgUserAccount)item);
         }
 
         public new UserAccount Create()
@@ -75,12 +76,12 @@ namespace SiCo.MembershipReboot.Ef.Npgsql
 
         public void Remove(UserAccount item)
         {
-            This.Remove((RelationalUserAccount)item);
+            This.Remove((PgUserAccount)item);
         }
 
         public void Update(UserAccount item)
         {
-            This.Update((RelationalUserAccount)item);
+            This.Update((PgUserAccount)item);
         }
     }
 }

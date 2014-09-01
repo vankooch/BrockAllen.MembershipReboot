@@ -1,9 +1,10 @@
 ﻿using BrockAllen.MembershipReboot;
+using BrockAllen.MembershipReboot.Npgsql;
 
 namespace SiCo.MembershipReboot.Ef.Npgsql
 {
     public class DefaultGroupRepository
-        : DbContextGroupRepository<DefaultMembershipRebootDatabase, RelationalGroup>,
+        : DbContextGroupRepository<DefaultMembershipRebootDatabase, PgGroup>,
           IGroupRepository
     {
         public DefaultGroupRepository()
@@ -20,11 +21,11 @@ namespace SiCo.MembershipReboot.Ef.Npgsql
         {
         }
 
-        private IGroupRepository<RelationalGroup> This { get { return (IGroupRepository<RelationalGroup>)this; } }
+        private IGroupRepository<PgGroup> This { get { return (IGroupRepository<PgGroup>)this; } }
 
         public void Add(Group item)
         {
-            This.Add((RelationalGroup)item);
+            This.Add((PgGroup)item);
         }
 
         public new Group Create()
@@ -54,12 +55,12 @@ namespace SiCo.MembershipReboot.Ef.Npgsql
 
         public void Remove(Group item)
         {
-            This.Remove((RelationalGroup)item);
+            This.Remove((PgGroup)item);
         }
 
         public void Update(Group item)
         {
-            This.Update((RelationalGroup)item);
+            This.Update((PgGroup)item);
         }
     }
 }
