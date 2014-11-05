@@ -10,7 +10,8 @@ namespace BrockAllen.MembershipReboot
 {
     public abstract class QueryableUserAccountRepository<TAccount> : 
         IUserAccountRepository<TAccount>,
-        IUserAccountQuery
+        IUserAccountQuery,
+        IUserAccountQuery<TAccount>
         where TAccount : UserAccount
     {
         public bool UseEqualsOrdinalIgnoreCaseForQueries { get; set; }
@@ -149,7 +150,7 @@ namespace BrockAllen.MembershipReboot
         // IUserAccountQuery
         public System.Collections.Generic.IEnumerable<string> GetAllTenants()
         {
-            return Queryable.Select(x => x.Tenant).Distinct();
+            return Queryable.Select(x => x.Tenant).Distinct().ToArray();
         }
 
         public System.Collections.Generic.IEnumerable<UserAccountQueryResult> Query(string filter)
@@ -178,7 +179,7 @@ namespace BrockAllen.MembershipReboot
                     Email = a.Email
                 };
 
-            return result;
+            return result.ToArray();
         }
 
         public System.Collections.Generic.IEnumerable<UserAccountQueryResult> Query(string tenant, string filter)
@@ -208,7 +209,7 @@ namespace BrockAllen.MembershipReboot
                     Email = a.Email
                 };
 
-            return result;
+            return result.ToArray();
         }
 
         public System.Collections.Generic.IEnumerable<UserAccountQueryResult> Query(string filter, int skip, int count, out int totalCount)
@@ -238,7 +239,7 @@ namespace BrockAllen.MembershipReboot
                 };
 
             totalCount = result.Count();
-            return result.Skip(skip).Take(count);
+            return result.Skip(skip).Take(count).ToArray();
         }
 
         public System.Collections.Generic.IEnumerable<UserAccountQueryResult> Query(string tenant, string filter, int skip, int count, out int totalCount)
@@ -269,7 +270,54 @@ namespace BrockAllen.MembershipReboot
                 };
 
             totalCount = result.Count();
-            return result.Skip(skip).Take(count);
+            return result.Skip(skip).Take(count).ToArray();
+        }
+
+        public System.Collections.Generic.IEnumerable<UserAccountQueryResult> Query(Func<IQueryable<TAccount>, IQueryable<TAccount>> filter)
+        {
+            var query =
+                from a in Queryable
+                select a;
+
+            if (filter != null) query = filter(query);
+
+            var result =
+                from a in query
+                select new UserAccountQueryResult
+                {
+                    ID = a.ID,
+                    Tenant = a.Tenant,
+                    Username = a.Username,
+                    Email = a.Email
+                };
+
+            return result.ToArray();
+        }
+
+        public System.Collections.Generic.IEnumerable<UserAccountQueryResult> Query(
+            Func<IQueryable<TAccount>, IQueryable<TAccount>> filter, 
+            Func<IQueryable<TAccount>, IQueryable<TAccount>> sort,
+            int skip, int count, out int totalCount)
+        {
+            var query =
+                from a in Queryable
+                select a;
+
+            if (filter != null) query = filter(query);
+            var sorted = (sort ?? QuerySort)(query);
+
+            var result =
+                from a in sorted
+                select new UserAccountQueryResult
+                {
+                    ID = a.ID,
+                    Tenant = a.Tenant,
+                    Username = a.Username,
+                    Email = a.Email
+                };
+
+            totalCount = result.Count();
+            return result.Skip(skip).Take(count).ToArray();
         }
     }
 }
