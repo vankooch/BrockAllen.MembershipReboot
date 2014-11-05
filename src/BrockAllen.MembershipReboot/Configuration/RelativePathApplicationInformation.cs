@@ -44,7 +44,7 @@ namespace BrockAllen.MembershipReboot
             get { return baseUrl != null && IsUrlCachingDisabled == false; }
         }
 
-        protected void SetBaseUrl(string url)
+        public void SetBaseUrl(string url)
         {
             this.baseUrl = url;
         }
