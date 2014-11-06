@@ -7,19 +7,12 @@ using BrockAllen.MembershipReboot.Npgsql;
 namespace SiCo.MembershipReboot.Ef.Npgsql
 {
     public class DbContextGroupRepository<Ctx, TGroup> :
-        QueryableGroupRepository<TGroup>, IDisposable
-        where Ctx : DbContext, new()
+        QueryableGroupRepository<TGroup>
+        where Ctx : DbContext
         where TGroup : PgGroup
     {
         protected DbContext db;
-        private bool isContextOwner;
-        private DbSet<TGroup> items;
-
-        public DbContextGroupRepository()
-            : this(new Ctx())
-        {
-            isContextOwner = true;
-        }
+        DbSet<TGroup> items;
 
         public DbContextGroupRepository(Ctx ctx)
         {
@@ -27,55 +20,35 @@ namespace SiCo.MembershipReboot.Ef.Npgsql
             this.items = db.Set<TGroup>();
         }
 
+        protected virtual void SaveChanges()
+        {
+            db.SaveChanges();
+        }
+
         protected override IQueryable<TGroup> Queryable
         {
             get { return items; }
         }
 
+        public override TGroup Create()
+        {
+            return items.Create();
+        }
+
         public override void Add(TGroup item)
         {
-            CheckDisposed();
             items.Add(item);
             SaveChanges();
         }
 
-        public override TGroup Create()
-        {
-            CheckDisposed();
-            return items.Create();
-        }
-
-        public void Dispose()
-        {
-            if (isContextOwner)
-            {
-                db.TryDispose();
-            }
-            db = null;
-            items = null;
-        }
-
-        public override System.Collections.Generic.IEnumerable<TGroup> GetByChildID(Guid childGroupID)
-        {
-            var query =
-                from g in items
-                from c in g.ChildrenCollection
-                where c.ChildGroupID == childGroupID
-                select g;
-            return query;
-        }
-
         public override void Remove(TGroup item)
         {
-            CheckDisposed();
             items.Remove(item);
             SaveChanges();
         }
 
         public override void Update(TGroup item)
         {
-            CheckDisposed();
-
             var entry = db.Entry(item);
             if (entry.State == EntityState.Detached)
             {
@@ -85,17 +58,14 @@ namespace SiCo.MembershipReboot.Ef.Npgsql
             SaveChanges();
         }
 
-        protected virtual void SaveChanges()
+        public override System.Collections.Generic.IEnumerable<TGroup> GetByChildID(Guid childGroupID)
         {
-            db.SaveChanges();
-        }
-
-        private void CheckDisposed()
-        {
-            if (db == null)
-            {
-                throw new ObjectDisposedException("DbContextGroupRepository");
-            }
+            var query =
+                from g in items
+                from c in g.ChildrenCollection
+                where c.ChildGroupID == childGroupID
+                select g;
+            return query.ToArray();
         }
     }
 }

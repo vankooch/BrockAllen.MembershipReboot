@@ -8,19 +8,12 @@ using BrockAllen.MembershipReboot.Npgsql;
 namespace SiCo.MembershipReboot.Ef.Npgsql
 {
     public class DbContextUserAccountRepository<Ctx, TAccount> :
-        QueryableUserAccountRepository<TAccount>, IDisposable
-        where Ctx : DbContext, new()
+         QueryableUserAccountRepository<TAccount>
+        where Ctx : DbContext
         where TAccount : PgUserAccount
     {
         protected DbContext db;
-        protected bool isContextOwner;
-        private DbSet<TAccount> items;
-
-        public DbContextUserAccountRepository()
-            : this(new Ctx())
-        {
-            isContextOwner = true;
-        }
+        DbSet<TAccount> items;
 
         public DbContextUserAccountRepository(Ctx ctx)
         {
@@ -32,42 +25,41 @@ namespace SiCo.MembershipReboot.Ef.Npgsql
         {
             get
             {
-                CheckDisposed();
                 return this.items;
             }
         }
 
-        public override void Add(TAccount item)
+        protected virtual void SaveChanges()
         {
-            CheckDisposed();
-            items.Add(item);
-            SaveChanges();
+            db.SaveChanges();
         }
 
         public override TAccount Create()
         {
-            CheckDisposed();
             return items.Create();
         }
 
-        public void Dispose()
+        public override void Add(TAccount item)
         {
-            if (isContextOwner)
-            {
-                db.TryDispose();
-            }
-            db = null;
-            items = null;
+            items.Add(item);
+            SaveChanges();
         }
 
-        public override TAccount GetByCertificate(string tenant, string thumbprint)
+        public override void Remove(TAccount item)
         {
-            var q =
-                from a in items
-                from c in a.UserCertificateCollection
-                where c.Thumbprint == thumbprint && a.Tenant == tenant
-                select a;
-            return q.SingleOrDefault();
+            items.Remove(item);
+            SaveChanges();
+        }
+
+        public override void Update(TAccount item)
+        {
+            var entry = db.Entry(item);
+            if (entry.State == EntityState.Detached)
+            {
+                items.Attach(item);
+                entry.State = EntityState.Modified;
+            }
+            SaveChanges();
         }
 
         public override TAccount GetByLinkedAccount(string tenant, string provider, string id)
@@ -80,37 +72,14 @@ namespace SiCo.MembershipReboot.Ef.Npgsql
             return q.SingleOrDefault();
         }
 
-        public override void Remove(TAccount item)
+        public override TAccount GetByCertificate(string tenant, string thumbprint)
         {
-            CheckDisposed();
-            items.Remove(item);
-            SaveChanges();
-        }
-
-        public override void Update(TAccount item)
-        {
-            CheckDisposed();
-
-            var entry = db.Entry(item);
-            if (entry.State == EntityState.Detached)
-            {
-                items.Attach(item);
-                entry.State = EntityState.Modified;
-            }
-            SaveChanges();
-        }
-
-        protected virtual void SaveChanges()
-        {
-            db.SaveChanges();
-        }
-
-        private void CheckDisposed()
-        {
-            if (db == null)
-            {
-                throw new ObjectDisposedException("DbContextUserAccountRepository");
-            }
+            var q =
+                from a in items
+                from c in a.UserCertificateCollection
+                where c.Thumbprint == thumbprint && a.Tenant == tenant
+                select a;
+            return q.SingleOrDefault();
         }
     }
 }
