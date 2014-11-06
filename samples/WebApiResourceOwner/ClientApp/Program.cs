@@ -15,7 +15,7 @@ namespace ClientApp
             var oauthClient = new OAuth2Client(new Uri("http://localhost:5034/token"), "client", "secret");
             try
             {
-                var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("alice", "pass2", "foo bar").Result;
+                var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("alice", "pass", "foo bar").Result;
                 if (oauthresult.AccessToken != null)
                 {
                     Console.WriteLine(oauthresult.AccessToken);
@@ -32,8 +32,6 @@ namespace ClientApp
             {
                 Console.WriteLine("Error, {0}", ex.Message);
             }
-
-            string choice = Console.ReadLine();
         }
     }
 }

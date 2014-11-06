@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30110.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SingleTenantOwinSystemWeb", "SingleTenantOwinSystemWeb\SingleTenantOwinSystemWeb.csproj", "{AA6283A3-9A1D-488D-979E-49D8E7813152}"
 EndProject
@@ -12,11 +12,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrockAllen.MembershipReboot.Test", "..\..\src\BrockAllen.MembershipReboot.Test\BrockAllen.MembershipReboot.Test.csproj", "{A6F1F1D0-766B-4AF8-B0DB-2E9675B8EAA7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrockAllen.MembershipReboot.Owin", "..\..\src\BrockAllen.MembershipReboot.Owin\BrockAllen.MembershipReboot.Owin.csproj", "{FB9C17A4-1BAC-4C11-BBB0-8D67557073A0}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{644A4FC2-1E7C-4F74-B6BE-5330DD4E8144}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\packages.config = .nuget\packages.config
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

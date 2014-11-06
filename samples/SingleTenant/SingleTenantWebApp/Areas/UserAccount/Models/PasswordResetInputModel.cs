@@ -15,9 +15,9 @@ namespace BrockAllen.MembershipReboot.Mvc.Areas.UserAccount.Models
 
     public class PasswordResetWithSecretInputModel
     {
-        public PasswordResetWithSecretInputModel()
-        {
-        }
+        public PasswordResetWithSecretInputModel ()
+	    {
+	    }
 
         public PasswordResetWithSecretInputModel(Guid accountID)
         {
@@ -27,7 +27,6 @@ namespace BrockAllen.MembershipReboot.Mvc.Areas.UserAccount.Models
         }
 
         public PasswordResetSecretViewModel[] Questions { get; set; }
-
         [Required]
         public string ProtectedAccountID { get; set; }
 
@@ -60,7 +59,6 @@ namespace BrockAllen.MembershipReboot.Mvc.Areas.UserAccount.Models
     {
         [HiddenInput]
         public Guid QuestionID { get; set; }
-
         [Required]
         [DataType(DataType.Password)]
         public string Answer { get; set; }
