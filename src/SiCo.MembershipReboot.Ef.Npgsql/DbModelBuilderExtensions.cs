@@ -2,8 +2,7 @@
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data.Entity;
-using System.Data.Objects.DataClasses;
-using BrockAllen.MembershipReboot;
+using System.Data.Entity.Core.Objects.DataClasses;
 using BrockAllen.MembershipReboot.Npgsql;
 
 namespace SiCo.MembershipReboot.Ef.Npgsql
