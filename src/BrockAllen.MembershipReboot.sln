@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrockAllen.MembershipReboot", "BrockAllen.MembershipReboot\BrockAllen.MembershipReboot.csproj", "{A33FE01F-AE9B-4BDE-B521-AB13916B1CFA}"
 EndProject
@@ -14,6 +14,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrockAllen.MembershipReboot.Owin", "BrockAllen.MembershipReboot.Owin\BrockAllen.MembershipReboot.Owin.csproj", "{FB9C17A4-1BAC-4C11-BBB0-8D67557073A0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SiCo.MembershipReboot.Ef.Npgsql", "SiCo.MembershipReboot.Ef.Npgsql\SiCo.MembershipReboot.Ef.Npgsql.csproj", "{3710643F-146E-4CDC-AAC6-8A1D6A153DA2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityFramework.PostgreSql", "EntityFramework.PostgreSql\EntityFramework.PostgreSql\EntityFramework.PostgreSql.csproj", "{AD1F7699-6C04-44D9-B99A-74D457D6DF2B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{3710643F-146E-4CDC-AAC6-8A1D6A153DA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3710643F-146E-4CDC-AAC6-8A1D6A153DA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3710643F-146E-4CDC-AAC6-8A1D6A153DA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD1F7699-6C04-44D9-B99A-74D457D6DF2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD1F7699-6C04-44D9-B99A-74D457D6DF2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD1F7699-6C04-44D9-B99A-74D457D6DF2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD1F7699-6C04-44D9-B99A-74D457D6DF2B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

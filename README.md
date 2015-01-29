@@ -1,6 +1,9 @@
 # What is this fork for?
 
-It provides initial support for PostgreSQL/Npgsql.
+It provides support for PostgreSQL/Npgsql.
+
+We also use:
+[PostgreSqlMigrationSqlGenerator](https://github.com/darionato/PostgreSqlMigrationSqlGenerator/) thx for that
 
 # What is MembershipReboot
 
