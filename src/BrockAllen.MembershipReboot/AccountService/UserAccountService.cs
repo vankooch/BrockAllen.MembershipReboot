@@ -34,6 +34,8 @@ namespace BrockAllen.MembershipReboot
             if (configuration == null) throw new ArgumentNullException("configuration");
             if (userRepository == null) throw new ArgumentNullException("userRepository");
 
+            configuration.Validate();
+
             this.Configuration = configuration;
 
             var validationEventBus = new EventBus();
@@ -62,7 +64,10 @@ namespace BrockAllen.MembershipReboot
                 var val = new AggregateValidator<TAccount>();
                 val.Add(UserAccountValidation<TAccount>.EmailIsRequiredIfRequireAccountVerificationEnabled);
                 val.Add(UserAccountValidation<TAccount>.EmailIsValidFormat);
-                val.Add(UserAccountValidation<TAccount>.EmailMustNotAlreadyExist);
+                if (configuration.EmailIsUnique)
+                {
+                    val.Add(UserAccountValidation<TAccount>.EmailMustNotAlreadyExist);
+                }
                 val.Add(configuration.EmailValidator);
                 return val;
             });
@@ -225,6 +230,11 @@ namespace BrockAllen.MembershipReboot
 
         public virtual TAccount GetByEmail(string tenant, string email)
         {
+            if (Configuration.EmailIsUnique == false)
+            {
+                throw new InvalidOperationException("GetByEmail can't be used when EmailIsUnique is false");
+            }
+            
             if (!Configuration.MultiTenant)
             {
                 Tracing.Verbose("[UserAccountService.GetByEmail] applying default tenant");
@@ -361,6 +371,11 @@ namespace BrockAllen.MembershipReboot
 
         public virtual bool EmailExists(string tenant, string email)
         {
+            if (Configuration.EmailIsUnique == false)
+            {
+                throw new InvalidOperationException("EmailExists can't be used when EmailIsUnique is false");
+            }
+
             if (!Configuration.MultiTenant)
             {
                 Tracing.Verbose("[UserAccountService.EmailExists] applying default tenant");
@@ -634,6 +649,7 @@ namespace BrockAllen.MembershipReboot
             if (account == null) throw new ArgumentException("Invalid AccountID");
 
             CloseAccount(account);
+            Update(account);
         }
         
         protected virtual void CloseAccount(TAccount account)
@@ -790,6 +806,11 @@ namespace BrockAllen.MembershipReboot
         {
             account = null;
 
+            if (Configuration.EmailIsUnique == false)
+            {
+                throw new InvalidOperationException("AuthenticateWithEmail can't be used when EmailIsUnique is false");
+            }
+            
             if (!Configuration.MultiTenant)
             {
                 Tracing.Verbose("[UserAccountService.AuthenticateWithEmail] applying default tenant");
@@ -821,6 +842,11 @@ namespace BrockAllen.MembershipReboot
         {
             account = null;
 
+            if (Configuration.EmailIsUnique == false)
+            {
+                throw new InvalidOperationException("AuthenticateWithUsernameOrEmail can't be used when EmailIsUnique is false");
+            }
+            
             if (!Configuration.MultiTenant)
             {
                 Tracing.Verbose("[UserAccountService.AuthenticateWithUsernameOrEmail] applying default tenant");
@@ -878,7 +904,7 @@ namespace BrockAllen.MembershipReboot
                     {
                         Tracing.Error("[UserAccountService.Authenticate] failed -- account not verified");
                         this.AddEvent(new AccountNotVerifiedEvent<TAccount>() { Account = account });
-                        result = false;
+                        return false;
                     }
 
                     Tracing.Verbose("[UserAccountService.Authenticate] authentication success");
@@ -1253,13 +1279,13 @@ namespace BrockAllen.MembershipReboot
             var account = this.GetByID(accountID);
             if (account == null) throw new ArgumentException("Invalid AccountID");
 
-            ValidatePassword(account, newPassword);
-
             if (!VerifyPassword(account, oldPassword))
             {
                 Tracing.Error("[UserAccountService.ChangePassword] failed -- failed authN");
                 throw new ValidationException(GetValidationMessage(MembershipRebootConstants.ValidationMessages.InvalidOldPassword));
             }
+
+            ValidatePassword(account, newPassword);
 
             Tracing.Verbose("[UserAccountService.ChangePassword] success");
 
@@ -1283,6 +1309,11 @@ namespace BrockAllen.MembershipReboot
 
         public virtual void ResetPassword(string tenant, string email)
         {
+            if (Configuration.EmailIsUnique == false)
+            {
+                throw new InvalidOperationException("ResetPassword via email can't be used when EmailIsUnique is false");
+            }
+            
             if (!Configuration.MultiTenant)
             {
                 Tracing.Verbose("[UserAccountService.ResetPassword] applying default tenant");
@@ -1518,6 +1549,11 @@ namespace BrockAllen.MembershipReboot
 
         public virtual void SendUsernameReminder(string tenant, string email)
         {
+            if (Configuration.EmailIsUnique == false)
+            {
+                throw new InvalidOperationException("SendUsernameReminder can't be used when EmailIsUnique is false");
+            }
+
             if (!Configuration.MultiTenant)
             {
                 Tracing.Verbose("[UserAccountService.SendUsernameReminder] applying default tenant");
