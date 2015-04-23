@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>BrockAllen.MembershipReboot</id>
+    <id>BrockAllen.MembershipReboot.zh</id>
     <version>8.3.0</version>
     <authors>BrockAllen</authors>
     <owners>BrockAllen</owners>
@@ -13,13 +13,10 @@
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2015</copyright>
     <tags>Membership Roles Claims Identity User Account Password Management Two Factor Authentication Certificate Authentication</tags>
-    <language>en-US</language>
-
-    <frameworkAssemblies>
-      <frameworkAssembly assemblyName="System.IdentityModel" targetFramework="net45" />
-    </frameworkAssemblies>
+    <language>zh</language>
 
     <dependencies>
+		<dependency id="BrockAllen.MembershipReboot" version="[8.3.0]" />
     </dependencies>
   </metadata>
 </package>

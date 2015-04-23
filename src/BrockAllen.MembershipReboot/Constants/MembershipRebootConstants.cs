@@ -11,6 +11,8 @@ namespace BrockAllen.MembershipReboot
         public class ClaimTypes
         {
             public const string Tenant = "http://brockallen.com/membershipreboot/claims/tenant";
+            public const string PendingTwoFactorAuth = "http://brockallen.com/membershipreboot/claims/pending2fauth";
+            public const string PartialAuthReason = "http://brockallen.com/membershipreboot/claims/partialauthreason";
         }
 
         public class SecuritySettingDefaults
@@ -51,10 +53,17 @@ namespace BrockAllen.MembershipReboot
             internal const int NumberOfComplexityRules = 3;
         }
 
+        /// <remarks>
+        /// Note to maintainers: <see cref="AuthenticationFailureCode"/> symbol names should have a matching
+        /// constant declared in <see cref="MembershipRebootConstants.ValidationMessages"/>
+        /// </remarks>
         public static class ValidationMessages
         {
             public const string AccountAlreadyVerified = "AccountAlreadyVerified";
+            public const string AccountClosed = "AccountClosed";
             public const string AccountCreateFailNoEmailFromIdp = "AccountCreateFailNoEmailFromIdp";
+            public const string AccountNotConfiguredWithCertificates = "AccountNotConfiguredWithCertificates";
+            public const string AccountNotConfiguredWithMobilePhone = "AccountNotConfiguredWithMobilePhone";
             public const string AccountNotConfiguredWithSecretQuestion = "AccountNotConfiguredWithSecretQuestion";
             public const string AccountNotVerified = "AccountNotVerified";
             public const string AccountPasswordResetRequiresSecretQuestion = "AccountPasswordResetRequiresSecretQuestion";
@@ -64,6 +73,7 @@ namespace BrockAllen.MembershipReboot
             public const string CodeRequired = "CodeRequired";
             public const string EmailAlreadyInUse = "EmailAlreadyInUse";
             public const string EmailRequired = "EmailRequired";
+            public const string FailedLoginAttemptsExceeded = "FailedLoginAttemptsExceeded";
             public const string InvalidCertificate = "InvalidCertificate";
             public const string InvalidEmail = "InvalidEmail";
             public const string InvalidKey = "InvalidKey";
@@ -75,6 +85,7 @@ namespace BrockAllen.MembershipReboot
             public const string InvalidQuestionOrAnswer = "InvalidQuestionOrAnswer";
             public const string InvalidTenant = "InvalidTenant";
             public const string InvalidUsername = "InvalidUsername";
+            public const string InvalidCredentials = "InvalidCredentials";
             public const string LoginFailEmailAlreadyAssociated = "LoginFailEmailAlreadyAssociated";
             public const string LoginNotAllowed = "LoginNotAllowed";
             public const string MobilePhoneAlreadyInUse = "MobilePhoneAlreadyInUse";
