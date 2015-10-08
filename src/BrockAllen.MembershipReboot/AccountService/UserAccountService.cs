@@ -1853,7 +1853,7 @@ namespace BrockAllen.MembershipReboot
 
             if (Configuration.EmailIsUsername)
             {
-                Tracing.Verbose("[UserAccountService.VerifyEmailFromKey] security setting EmailIsUsername is true and AllowEmailChangeWhenEmailIsUsername is true, so changing username: {0}, to: {1}", account.Username, account.Email);
+                Tracing.Verbose("[UserAccountService.VerifyEmailFromKey] security setting EmailIsUsername is true, so changing username: {0}, to: {1}", account.Username, account.Email);
                 account.Username = account.Email;
             }
 
@@ -1880,7 +1880,7 @@ namespace BrockAllen.MembershipReboot
 
             if (Configuration.EmailIsUsername)
             {
-                Tracing.Verbose("[UserAccountService.SetConfirmedEmail] security setting EmailIsUsername is true and AllowEmailChangeWhenEmailIsUsername is true, so changing username: {0}, to: {1}", account.Username, account.Email);
+                Tracing.Verbose("[UserAccountService.SetConfirmedEmail] security setting EmailIsUsername is true, so changing username: {0}, to: {1}", account.Username, account.Email);
                 account.Username = account.Email;
             }
 
